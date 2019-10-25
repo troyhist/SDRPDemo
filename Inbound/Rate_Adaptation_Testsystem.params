@@ -1,0 +1,27 @@
+# ------------------------------------------------------- #
+#                                                         #
+# The value of system parameters are specified here.      #
+# The Parameter values  can be defined  as follows:       #
+# "for -1.0 to 1.0 step 1" is the same as "-1; 0; 1".     #
+# These values represent the initial parameter value      #
+# per iteration of the relevant ParameterSet. All         #
+# system parameters can be edited here.                   #
+#                                                         #
+# ------------------------------------------------------- #
+
+PARAMETER_SET
+{
+  GlobalSeed        : 1234567890
+  PTclScript        : 
+  RunLength         : 1
+  Frequency         : 0.1
+  Phase             : 0.0*PI
+  SamplingRate      : 1
+  PortSize1         : 80
+  InterpolationRatio: 1;2
+  DecimationRatio   : 1
+  PortSizeRateAdapt : $PortSize1*$InterpolationRatio/$DecimationRatio
+  nTaps             : 15
+  CutOffFrequency   : 0.25
+}
+

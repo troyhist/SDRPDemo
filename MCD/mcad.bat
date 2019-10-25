@@ -1,0 +1,1 @@
+"c:\programme\mathsoft\Mathcad 2001 Professional\MCAD.exe %1 %2 %3"

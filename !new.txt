@@ -1,0 +1,478 @@
+SDRPrims ver. 1.0
+
+Features of the CSDR80211a class: (10.01.2003)
+
+Features of the CFixNum class: (09.12.2002)
+- there are 3 types of variable initialization in the library:
+  constructor, Setup + assignment op., constructor + assignment operator
+- functions AsFixNum() became public
+- arithmetic operations can be only performed only on the numbers which have
+  the same size of the fractional part (06.01.2003)
+- all CFixNum numbers have to be initialised before use
+- added 3 functions to control bit capacity of intermediate results in CFixNum
+- optimal default values for CSDRtest::TestChain() is (15:8,7)
+- UserDefined overflow handling function should be defined before declaration 
+  of the instances of the CFixNum class
+- initializing with a 'double' constructor automatically calculates number
+  of bits to represent a fractional part of a double number
+- it's necessary to use type conversion operators explicitly if standard C
+  (not C++) functions with variable arguments list are used (like printf)
+- DELETED !!! type conversion operator 'to int' performs rounding !!! DELETED
+- operator = automatically converts capacity of the right-hand result according
+  to the own capacity. In case of an overflow it calls _ASSERT or user defined
+  function
+
+GLOBAL TODO:
+- to find bug in DelCom (03.12.2002)
+- add rounding in CFixNum class (02.01.2003)
+- add precission setup in CFixNum class (02.01.2002)
+
+Build: 52 (30.01.2003)
+- deleted bugs in GetFilter...(..) when fixed-point calculations are used
+- replaced CSDRPrims::SetupFixPointInVector(..) into CVectConv::...(..)
+- added code blocking into all functions of CSDR802.11a (in case of
+  fixed-point calculations)
+- added code blocking into CSDRPrims::FFT(..) and CSDRPrims::IFFT(..) (no FxP
+  support)
+
+Build: 51 (29.01.2003)
+- added initialisation check into CFixNum::SetupFrom(...)
+- added initialisation check into CFixNum::AsFixNum(...)
+- added initialisation check into CFixNum::ConvertTo(...)
+
+Build: 50 (27.01.2003)
+- added signal descriptions in MathCAD diagrams
+
+Build: 49 (24.01.2003)
+- added an overloaded scrambling function in CSDR80211a::DataScramble(..).
+  It's possible to set initial state of the scrambler.
+- deleted unused code from CFixNum (marked as //DEL)
+
+Build: 48 (22.01.2003)
+- added some constrains in CSDR80211a::CreatePacket(..). Size of the input
+  array pData has to be a multiply of Ndbps and size of the payload nLen has 
+  to be less than size of pData
+- changed CSDR80211a::CreatePacket(..). Added tail bits zeroing after
+  scrambling.
+- deleted missprint in the input data array (CSDR80211a::GetDummyData(..))
+
+Build: 47 (21.01.2003)
+- added a size checking of the input array in CSDR80211a::CreatePacket(..)
+- added support of different modulation types in CSDR80211a::DataConvToFD(..)
+- added MODUL_64QAM(..). Modulator (at this moment is placed in CSDRPrims(..))
+- added MODUL_QPSK(..). Modulator (at this moment is placed in CSDRPrims(..))
+- added a new method of DEBUG output: _DEBUG_TRACEVECT4(filename, vector, 
+  vector_size, output_format, type_conversion, outputblock_size)
+
+Build: 46 (20.01.2003)
+- added CSDR80211a::AppendDataSymbolToChain(..) - appends an OFDM data symbol to the whole 
+  packet chain
+- added CSDR80211a::GetCodeRateByDataRate(..) - returns code rate for given 
+  Data Rate value
+- added CSDR80211a::GetModulTypeByDataRate(..) - returns modulation type 
+  for given Data Rate value
+- added CSDR80211a::GetNbpscByDataRate(..) - returns Nbpsc for given Data Rate 
+  value
+- added CSDR80211a::GetNcbpsByDataRate(..) - returns Ncbps for given Data Rate
+  value
+- added CSDR80211a::GetNdbpsByDataRate(..) - returns Ndbps for given Data Rate
+  value
+- added CSDR80211a::GetPilotPolarity(..) - returns polarity of the pilot 
+  signal with given idx
+- added CSDR80211a::GetPunctMaskByCodeRate(..) - returns puncturing masks for 
+  differen code rates
+- added CSDR80211a::GetRateBitsByDataRate(..) - returns code to represent 
+  given data rate in the SIGNAL field
+- changed CSDR80211a::CreateFieldSIGNALbin(..). Binary Data Rate is calculated 
+  by a special function.
+- deleted bug in CSDRTest::Test80211a(..). It's necessary to clear (to zero) 
+  bits in the range [816; 821] after scrambling.
+
+Build: 45 (17.01.2003)
+- added macro _DEBUG_TRACEVAR(..). Allows to trace stream or value of a single 
+  varibale, and save this value into given file
+- typed in DATA packet #04 (re & im parts)
+- typed in DATA packet #05 (re & im parts)
+- typed in DATA packet #06 (re & im parts)
+- added MathCAD file to verify results of modulation
+
+Build: 44 (16.01.2003)
+- added CVectConv::GetWindow(..)
+- added a calculation of the pilo signals polarity in 
+  CSDR80211a::InsertPilotInSignal(..)
+- added CSDR80211a::DataConvToFD(..).
+- added CSDR80211a::ScrambleData(..).
+- added CSDR80211a::DateEncode(..).
+- added CSDR80211a::DataIntleav(..).
+- added SCRAMBL(..) (at the moment at CSDRPrims)
+
+Build: 43 (15.01.2003)
+- improved CVectConv::ConvVectIntToBool(..), added parametr "BitsPI".
+- added CSDR80211a::CyclExt(..). This function is exproved version of the
+  SignExt(..) function, but it allows to copy a tail of signal in the beginning.
+- deleted a bug from CSDR80211a::InsertPilotInFieldSIGNAL(..). Pilot signals
+  were set at the wrong positions.
+- changed CSDR80211a::CreateFieldSIGNALtd(..).Added signal convertion and IFFT.
+- deleted CSDR80211a::ConvertFieldSIGNALfd(..)
+- deleted CSDR80211a::ConvertFieldSIGNALtd(..)
+- added automatical parity calculation into
+  CSDR80211a::CreateUnencodedFieldSIGNAL(..)
+- improved CSDR80211a::GenerateShortSequenceTD(..)
+- added CSDR80211a::AddTailTo(..). This functions add a tail of one vector
+  into the beginning of another vector.
+
+Build: 42 (14.01.2003)
+- deleted a bug from CSDR80211a::GenerateLongSequenceFD(..). This function
+  passed data in invalid order into FFT().
+- deleted a bug from CSDR80211a::GenerateShortSequenceFD(..). This function
+  passed data in invalid order into FFT().
+- deleted a bug from CSDRPrims::FFT(..). This function was optimized for
+  inverse data order.
+- added CSDR80211a::GenerateLongSequenceFD(..)
+- added MathCAD 2000 output for CSDR80211a::GenerateShortSequence...D(..)
+- added CSDRPrims::IFFT(..) inverse FFT
+- added CSDRPrims::WindowW(..) functions, which performs windowing 
+  multiplication of a given vector.
+- added CSDR80211a::SignExtAndWnd(..), which performs cyclical extension of 
+  signal up to given length and then windowing of this vector
+
+Build: 41 (13.01.2003)
+- added CSDR80211a::GenerateShortSequenceFD(..)
+- added CComplext::exp() function.
+- deleted a bug from CSDRPrims::MODUL_BPSK(..). It used wrong values for
+  represenation of input vector. (-1,0 for 1, and 1,0 for 0).
+- changed CSDR80211a::InsertPilotInFieldSIGNAL(..). This functions inserts
+  zero value at position 0 (abs=32) besides 4 pilot subscarriers.
+- added CSDR80211a::CreateFieldSIGNALbin(..). This function creates binary 
+  vector representation of SIGNAL field.
+- added CSDR80211a::CreateFieldSIGNALfd(..). This function converts binary 
+  vector into a frequency domain represenation. Modulation is used.
+- added CSDR80211a::CreateFieldSIGNALtd(..). This function converts field SIGNAL
+  from frequency domain into a time domain.
+
+Build: 40 (10.01.2003)
+- corrected bug in CSDR80211a::CreateUnencodedFieldSIGNAL(...). Incorrect
+  copying of the Length field
+- added interleavers INTLEAV(..), INTLEAV1(..), INTLEAV2(..) functions
+- added a modulator MODUL_BPSK(..) function
+- added CSDRTest::Test80211a() function
+
+Build: 39 (09.01.2003)
+- added convolutional encoder CONVENC function
+- added puncturing and parallel to serial conversion PUNCT function
+- added a new claa CVectConv. All vector convertion functions were moved into
+  this class
+- added a new class CSDR90211a (set of primitives and blocks to process signals
+  in the IEEE 802.11a standart)
+- added two static convert-functions CSDRPrims::ConvVectIntToBool(..) and
+  CSDRPrims::ConvVectBoolToInt(..)
+- functions CSDRPrims::ConvVectCmplxToFloat(..) and 
+  CSDRPrims::ConvVectFloatToCmplx became static. And their prorotypes are
+  changed (deleted nSize parametrs)
+- added new vector type CVectorBool (for binary elements)
+
+Build: 38 (07.01.2003)
+- added several dummy-functions to keep compability with Fix class (Fix.cpp)
+- added dummy function: CFinNum::overflow()
+- added dummy function: CFinNum::set_rounding(..)
+- added dummy function: CFinNum::Set_MASK(..)
+- added dummy function: CFinNum::roundMode()
+- added dummy function: printFix(const Fix&)
+- added dummy function: CFinNum::complement()
+- added dummy function: operator<<(..)
+- added new arithmetic-assignment operators: CFixNum::op. +=, op. -=, op. *=.
+  Using of the operator *= is only reasonable in case of zero-sized fractional
+  part, in case of the nonzero-sized fractional part OVF error will be
+  generated.
+- deleted all CFixNum::SetFormat...(..) functions
+- deleted all CFixNum::SetFlag...(..) functions
+- deleted static members of CFixNum, which shown a default format
+- deleted static members of CFixNum, which were used in CFixNum::SetFormat...
+
+Build: 37 (06.01.2003)
+- corrected a bug in CFixNum::Compare(..). The bug was in the declaration of
+  the temporary variables tA, tB and tR
+- added new initialization constructor 
+  CFixNum::CFixNum(int, int, const CFixNum&)
+- renamed CFixNum::GetBitsFracWOSign() into CFixNum::GetBitMapFracWOSign()
+- renamed CFixNum::GetBitsIntWOSign() into CFixNum::GetBitMapIntWOSign()
+- added invalidity setup function (CFixNum::SetInvalidity(..))
+- added OVF error handler in CFixNum::Setup(...) function
+- function CSDRPrims::SetupFixPointInVector became static
+- function CFixNum::ConvertTo(..) returns reference to itself
+- all CFixNum set Format functions have been deleted
+- !!! DELETED !!! functions CFixNum::AsFixNum(..) became public !!! DELETED !!!
+- operator CFixNum::op +() has been changed. It's not more possible to add 
+  numbers with different size of the fractional part
+
+Build: 36 (03.01.2003)
+- arithmetic operators in CFixNum take now constant references (instead of non 
+  constant references)
+- changed implementation CSDRPrims::SINGEN function (CFloat -> double)
+- added new type of the exception (error handler)
+- simplified CFixNum::operator=() (no automatical shifting more)
+
+Build: 35 (02.01.2003)
+- tested improved version of CFixNum class
+
+Build: 34 (23.12.2002)
++ changed interface of CFixNum class. I/f is now the same as CFix class has
+
+Build: 33 (20.12.2002)
+- added a verification code in all arithmetic operations
+- added a error handling in CFixNum::ConvertTo(..)
+- added a checking of the initialization flag in CFixNum::op=() and in all the
+  arithmetical operators
+- added initialization call for each CFixNum variable
+- deleted bug from CFixNum::GetMax(), GetMin(). Functions returned incorrect
+  values if number of int bit was equal to 32.
+
+Build: 32 (19.12.2002)
+- deleted initialization constructor CFixNum::CFixNum(double)
+- deleted a bug from CSDRPrims::INTPOL(...). Value of iN was calculated
+  incorrectly because of the rounding in CFixNum::AsInt() operator
++ added 3 functions to control bit capacity of intermediate results in CFixNum
+  CFixNum::SetFormatADD, DIV, MUL (...)
++ improved CSDRPrims::SetFixPointInVector(...)
++ added automatically f.p. calculations support to all others functional 
+  primitives of CSDRPrims class
++ changed format of f.p. information stored in CSDRPrims, CSDRBlock. Now 
+  arrays of the following format are used:
+  int FPIM[3] - array with f.p. format for the intermediate calculations
+  int FPO1[3] - array with f.p. format for the 1st output signal (result)
+  elemets: [0] - total size in bits
+           [1] - size in bits of an integer part (sometimes is not used)
+           [2] - size in bits of a fractional part
+
+Build: 31 (18.12.2002)
++ changed initialization constructor CFixNum::CFixNum(double a). Now
+  CFixNum::Setup(int, int, double) function is used inside the constructor
+  instead of CFixNum::AutoSetupFromNumber(double)
+- deleted bug from CFixNum::GetBitsFracWOSign(..), it calculated incorrect
+  bit map of fractional bits
++ added automatic f.p. support in CSDRBlock:
+  TestGenerateSpectrum, SignPowInd, SampRateConv
++ added automatic f.p. support in CSDRPrims:
+  SINGEN, VSQRMEAN, INTPOL, DECIM, RATAD, CWS2
+
+Build: 30 (17.12.2002)
++ added automatic f.p. support in CSDRPrims:
+  VMEAN, CWD2, CWP
++ added manually stup of number capacity in DCOffRem, FreqPhaseCorr
++ evaluated optimal default values for fixed numbers to process a function
+  CSDRTest::TestChain(). Optimal value is (15:8,7)
+- deleted small bug in CSDRPrims::VMEANfp(...): there was initialisation of
+  the temprorary variable with maximal bit width
+
+Build: 29 (16.12.2002)
++ added overflow wrapping support (changed CFixNum::operator= (...))
+- deleted small type conversion bug in CSDRPrims::VMEANfp(...)
+- replaced CFixNum::operator-(VAL) by CFixNum::operator+(-VAL)
++ added external call back function support (CFixNum::SetErrHandFunc(..))
++ changed internal structure of the class: added m_bInited variable, which
+  shows if class has been inited manually or automatically
+
+Build: 28 (13.12.2002)
+- updated CFixNum::operator- according to the changes in the CFixNum::operator+
++ added function CFixNum::GetNumOfBitsForFracPart(), this function calculates
+  optimal number of bits to represent a fractional part
+- corrected bug in CFixNum::operator + (), the problem was in the wrong 
+  initialisation of temporary variables CFixNum tA, tB;
++ added new primitive function: CSDRPrims::CWP2 (product with a constant) (only
+  floating/fixed point version)
++ added new primitive CSDRPrims::VMEANfp(...) - vector mean for a fixed point
+  data
++ implemented smart DCOffRem block. It automatically rescales input values.
+  Rescale ratio is equal to a number of elements in the input array
+
+Build: 27 (12.12.2002)
+- rewrote operators CFixNum::operator=, operator*, operator+
+- corrected bug in CFixNum::Compare function
+- changed main rule of the CFixNum class (now it's: To keep the precission)
++ added rounding in CFixNum::AsInt() function
+- division operation is replaced by (1/x) and then multiplication in the
+  following primitive functions and modules:
+  VMEAN, SINGEN, INTPOL, DECIM, RATAD, VSQRMEAN
++ corrected bug in CSDRTestRATAD in signal power indication
++ added copmparing to zero and to one functions of internal value
++ changed return values of friend arithmetic operations (all results are 
+  CFixNum values)
+
+Build: 26 (11.12.2002)
+- deleted bug in fix point multiplication
++ tested class CSDRTest
++ added fix point + operator
++ added fix point - operator
++ added fix point * operator
+
+Build: 25 (10.12.2002)
++ added function to calculate real number of bits to represent integer part
++ improved operator= 
+
+Build: 24 (09.12.2002)
+- deleted bug in CFixNum::Setup(double a)
++ improved operator "equal"
++ implemented compare function in CFixNum (CFixNum::Compare(...))
++ implemented new constructors in CFixNum
+
+Build: 23 (06.12.2002)
++ added class CFixNum (fixed point numbers in the range [-1; +1])
+- deleted CFBCNumber
+- changed prototype of the complex implementation of the TestGenerateSpectrum
+
+Build: 22 (05.12.2002)
++ added class CFBCNumber (fixed bit capacity) (it's improved version of the 
+  CFNumber)
+- deleted class CFNumber
++ added comparsions operators in CFNumber: ==, <, <=, >, >= (includes double 
+  and int versions)
+
+Build: 21 (04.12.2002)
++ corrected bug in all operators: return value shoud be a <class_type> but
+  not a <class_type&>
++ converted CComplex class into CComplext template
++ added C++ output (cout) into CComplex class
+- changed return value type in CComplex class (CComplex --> CComplex&)
++ added C++ output (cout) into CFnumber class
++ added fixed bit capacity version for the following functional primitives:
+  VMEAN, CWD2 (both versions), SINGEN, CWS2 (both versions)
++ added fixed bit capacity version for the following modules:
+  DCOffRem
+
+Build: 20 (03.12.2002)
++ added MathCAD fixed point output
++ used template to represent vectors
+- deleted classes CVectorInt, CVectorFloat, CVectorCmplx
++ added class CFNumber
++ added class CVectorFNum
+- vector class function GetLen() has been renamed into size()
+- updated all vector classes (CVectorInt, CVectorFloat, CVectorCmplx,
+  CVectorFNum)
+
+Build: 19 (02.12.2002)
++ started to implement Fixed point numbers class
+- improved CParser
+
+Build: 18 (28.11.2002) *STABLE*
+- changed CSDRBlock::Setup(...) function (deleted interpolation 
+  & decimation factors)
+- changed CSDRBlock::SampRateConv_Setup(...) function (added interpolation 
+  & decimation factors)
+- renamed TestGenerateNoise(..) function into TestGenerateSpectrum(..) in
+  CSDRBlock
++ added pseudo-complex version of: (CSDRPrims) ACFPNT, CCPLX, CWP, CWS, CWS2,
+  PHASE, VSQRMEAN, SINGEN
++ added pseudo-complex version of: (CSDRBlock) TestGenerateSpectrum
++ CSDRTest: all functions have been reimplemented. (Only pseudo-complex 
+  functions are used)
+
+Build: 17 (27.11.2002)
++ data i/o functions in CSDRTest became public
+
+Build: 16 (26.11.2002)
++ wrote documentation
+
+Build: 15 (25.11.2002)
++ tested RATAD block with different referenced data
++ documented some primitive functionals (CSDRPrims)
+
+Build: 14 (22.11.2002)
++ checked RATAD block with Referenced data
++ increased precision in the output signals
++ added complete test chain
++ improved SG function in the TestRREF.mcd file (it allows shifting)
++ added functions FilterLoadFromFile
++ added functions DataILoadFromFile, DataOLoadFromFile
+
+Build: 13 (21.11.2002)
++ test functions have been moved from CSDRBlock to CSDRTest
++ added class CSDRTest - which consists a set of test functions
++ got some sample input data
++ added comments processing in CPar
+
+Build: 12 (20.11.2002)
++ added reading from file in CPar
++ found bug in the SampRateConvRATAD function: to avoid this bug it's necessary 
+  to use:
+  1. to use proper filter (which passes correct range)
+  2. to use correct signal (with correct spectrum) at the input of the RATAD 
+     block
+
+Build: 11 (19.11.2002)
++ added CPar class
++ added TestFenerateNoise function which generates summ of sinus signals in given range
++ optimized SampRateConvIP2DE, SampRateConvRATAD, SampRateConvFIR functions
++ added doublewards signal processing chain in SRCIP2DE
++ tested RATAD chain in (2,2), (4,4) mode (with LP15 filter)
+
+Build: 10 (18.11.2002)
++ added Mathcad interpolated/decimated signal analyzing
++ added test function for SampRateConv Step 2 (RATAD) chain
++ added test function: SampRateConvIP2DE interpolation -> decimation
+
+Build: 9 (15.11.2002)
++ added Mathcad spectrum analyzing file: TestSampRateConvNorm.mcd
++ debugged block function SampRateConv Step 2 (INTPOL)
++ debugged block function SampRateConv Step 2 (DECIM)
+
+Build: 8 (14.11.2002)
++ tested DECIM primitive
++ tested an INTPOL primitive
++ added primitive functions: DECIM
+
+Build: 7 (13.11.2002)
++ added test function for SampRateConv Step 2 (INTPOL) chain
++ added test function for SigPowInd chain
++ added test function for DCOffRem chain
++ improved output in Mathcad2k (FFT is used instead of CFFT)
++ reduced orders of used test filters (down to 27)
++ added primitive functions: INTPOL
+- deleted primitive function: SINGEN2PI
+
+Build: 6 (12.11.2002)
++ added Setup & setup-control function into the all functions of the CSDRBlock
++ added functions with predefined FIR filter coefficients
++ added again frequency sampling in SINGEN
++ added primitive functions: SINGEN2PI (frequency is normalized by 2*PI) 
+
+Build: 5 (11.11.2002)
++ added MathCad output
++ in CSDRBlocks::SampRateConv(...) primitive RATAD is substituted by FIR
++ added test function for SampRateConv chain
++ added test function for FreqPhaseCorr chain
++ added test function for the whole Signal Processing Chain
++ added the copying constructror & operator= into all vector classes
++ changed functions prototypes (CVectorFloat .. -> CVectorFloat& ..)
++ added block CSDRBlock::SampRateConv(...)
++ added primitive functions: RSMPL, RATAD
+
+
+Build: 4 (08.11.2002)
++ added block-primitive: CSDRBlock::FreqPhaseCorr(...)
++ corrected bug in CSDRPrims::SINGEN(...)
+
+Build: 3 (07.11.2002)
++ added block-primitive: DCOffsetRemoval - CSDRBlock::DCOffRem(...)
++ new class CSDRBlock (blocks with primitive functions inside)
++ new class CVectorFloat (double float)
++ new class CVectorInt
++ added setup functions for each primitive function
++ added primitive functions: FIRSE, FIRSO, VMEAN, CWD2, SINGEN
+- deleted class CVectorElement
+- deleted class CVector
+- deleted all functions which supported CVector in CSDRPrim
+
+Build: 2 (06.11.2002)
++ class CVectorElement is implemented. This class allows unified performing
+  of arithmetical operations over different data types (int, unsigned, complex)
++ class CVector is re-implemented
++ built CVectorElement::ConvertToType function
++ added primitive functions: PHASE, ACFPNT, FIR
++ re-written primitive functions from Build-1
+
+Build: 1 (05.11.2002)
++ implemented: class CComplex
++ implemented: class CVector
++ implemented: class CVectorCmplx, derived from the CVector
++ added primitive functions: DOTP2, CWP, CWS, CWD, CWQ, CWSQR, CWSC, ABS,
+	SQRSUM, CCPLX, VSUM, SWA
